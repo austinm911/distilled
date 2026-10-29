@@ -1,6 +1,6 @@
 import * as crypto from "node:crypto";
 import * as API from "@distilled.cloud/core/api";
-import type { API_ERRORS, ConfigError, InvalidInput } from "@distilled.cloud/core/errors";
+import { type API_ERRORS, ConfigError, type InvalidInput } from "@distilled.cloud/core/errors";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 /**
  * KalshiProtocol -- hand-written.
@@ -125,14 +125,22 @@ const sign = (
 ): Effect.Effect<HttpClientRequest.HttpClientRequest> =>
   Effect.withFiber((fiber) => {
     const resolve = Context.get(fiber.context as Context.Context<Credentials>, Credentials);
-    return Effect.map(resolve, (creds) =>
-      creds.apiKey === undefined
-        ? request
-        : HttpClientRequest.setHeaders(
+    return Effect.flatMap(resolve, (creds) => {
+      const apiKey = creds.apiKey;
+      if (apiKey === undefined) return Effect.succeed(request);
+      // A malformed key surfaces as a ConfigError, not a defect.
+      return Effect.try({
+        try: () =>
+          HttpClientRequest.setHeaders(
             request,
-            authHeaders(creds.apiKey, request.method, request.url, Date.now()),
+            authHeaders(apiKey, request.method, request.url, Date.now()),
           ),
-    );
+        catch: (cause) =>
+          new ConfigError({
+            message: `Cannot sign with the configured private key: ${cause instanceof Error ? cause.message : String(cause)}`,
+          }),
+      });
+    });
   }) as Effect.Effect<HttpClientRequest.HttpClientRequest>;
 
 export const KalshiProtocol: Layer.Layer<API.Protocol> = /*@__PURE__*/ Layer.effect(
