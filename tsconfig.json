@@ -110,6 +110,15 @@
       "path": "./packages/iceberg/tsconfig.scripts.json"
     },
     {
+      "path": "./packages/kalshi/tsconfig.json"
+    },
+    {
+      "path": "./packages/kalshi/tsconfig.scripts.json"
+    },
+    {
+      "path": "./packages/kalshi/tsconfig.test.json"
+    },
+    {
       "path": "./packages/kubernetes/tsconfig.json"
     },
     {
