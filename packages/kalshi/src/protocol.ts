@@ -60,10 +60,19 @@ const errorEnvelope = (body: unknown) => {
   if (body === null || typeof body !== "object") return undefined;
   const inner = (body as { error?: unknown }).error;
   if (inner === null || typeof inner !== "object") return undefined;
-  const { code, message } = inner as { code?: unknown; message?: unknown };
+  const { code, message, details } = inner as {
+    code?: unknown;
+    message?: unknown;
+    details?: unknown;
+  };
+  // `message` is often generic ("bad request"); `details` names the cause.
+  const text = typeof message === "string" ? message : undefined;
   return {
     code: typeof code === "string" ? code : undefined,
-    message: typeof message === "string" ? message : undefined,
+    message:
+      typeof details === "string" && details !== "" && text !== undefined
+        ? `${text}: ${details}`
+        : text,
   };
 };
 

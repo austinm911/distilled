@@ -160,6 +160,28 @@ describe("Kalshi errors", () => {
     expect(error).toMatchObject({ _tag: "NotFound", message: "not found" });
   });
 
+  test("appends the envelope's details to its message", async () => {
+    const { result } = run(
+      Effect.flip(getBalance({})),
+      () =>
+        json(
+          {
+            error: {
+              code: "bad_request",
+              message: "bad request",
+              details: "series_ticker and mve_filter filters are mutually exclusive",
+            },
+          },
+          400,
+        ),
+      withKey(ed.privateKey, "pkcs8"),
+    );
+    const error = await result;
+    expect(error).toMatchObject({
+      message: "bad request: series_ticker and mve_filter filters are mutually exclusive",
+    });
+  });
+
   test("falls back to UnknownKalshiError with the code", async () => {
     const { result } = run(
       Effect.flip(getBalance({})),
