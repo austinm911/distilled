@@ -280,6 +280,15 @@
       "path": "./packages/okta/tsconfig.scripts.json"
     },
     {
+      "path": "./packages/polymarket-us/tsconfig.json"
+    },
+    {
+      "path": "./packages/polymarket-us/tsconfig.scripts.json"
+    },
+    {
+      "path": "./packages/polymarket-us/tsconfig.test.json"
+    },
+    {
       "path": "./packages/porkbun/tsconfig.json"
     },
     {

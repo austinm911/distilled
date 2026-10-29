@@ -107,6 +107,7 @@ export const GROUPS: ReadonlyArray<readonly [string, ReadonlyArray<string>]> = [
       "whop",
       "gusto",
       "kalshi",
+      "polymarket-us",
     ],
   ],
   [
@@ -181,6 +182,7 @@ export const SEARCH_HINTS: Record<string, string> = {
   coinbase: "crypto",
   mercury: "banking",
   kalshi: "prediction markets trading event contracts exchange",
+  "polymarket-us": "prediction markets trading event contracts exchange sports",
   polar: "payments open source",
   whop: "payments",
   gusto: "payroll",

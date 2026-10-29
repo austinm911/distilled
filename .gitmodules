@@ -443,3 +443,8 @@ shallow = true
 	url = https://github.com/distilled-mirror/spec-mirror-kalshi.git
 	ignore = dirty
 	shallow = true
+[submodule "packages/polymarket-us/specs/spec-mirror-polymarket-us"]
+	path = packages/polymarket-us/specs/spec-mirror-polymarket-us
+	url = https://github.com/distilled-mirror/spec-mirror-polymarket-us.git
+	ignore = dirty
+	shallow = true
